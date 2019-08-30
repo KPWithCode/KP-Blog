@@ -3,9 +3,13 @@ const graphqlHttp = require('express-graphql');
 const {
     buildSchema
 } = require('graphql');
+const mongoose = require('mongoose');
+
+const Blog = require('./models/blog');
+
+
 const app = express();
 app.use(express.json());
-const blogs = [];
 
 app.use('/graphql', graphqlHttp({
     // String! <- exclamation point means it will always return list of string 
@@ -21,11 +25,22 @@ app.use('/graphql', graphqlHttp({
             rating: Float!
         }
 
+        type User {
+            _id:ID!
+            email: String!
+            password: String
+        }
+
         input BlogInput {
             title: String!
             description: String!
             date: String!
             rating:Float!
+        }
+
+        input UserInput {
+            email: String!
+            password: String!
         }
 
         type RootQuery {
@@ -34,6 +49,7 @@ app.use('/graphql', graphqlHttp({
 
         type RootMutation {
             createBlogs(blogInput: BlogInput): Blog
+            createUser(userInput:UserInput): User
         }
 
         schema {
@@ -44,21 +60,44 @@ app.use('/graphql', graphqlHttp({
     // Resolver
     rootValue: {
         blogs: () => {
-            return blogs;
+            return Blog.find()
+                .then(blogs => {
+                    return blogs.map(blog => {
+                        return {
+                            ...blog._doc,_id: blog.id
+                        };
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         },
-        createBlogs: (args) => {
-            const blog = {
-                _id: Math.random().toString(),
+        createBlogs: args => {
+            const blog = new Blog({
                 title: args.blogInput.title,
                 description: args.blogInput.description,
                 date: args.blogInput.date,
-                rating: args.blogInput.rating
-            };
-            blogs.push(blog);
-            return blog;
+                rating: new Date(args.blogInput.rating)
+            });
+            return blog
+                .save().then(result => {
+                    console.log(result);
+                    return {
+                        ...result._doc
+                    };
+                }).catch(err => {
+                    console.log(err);
+                    throw err;
+                });
         }
     },
     graphiql: true
 }));
 
-app.listen(3000);
+mongoose
+    .connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@blogcluster-1pxfe.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`).then(() => {
+        app.listen(3000);
+    })
+    .catch(err => {
+        console.log(err);
+    });
