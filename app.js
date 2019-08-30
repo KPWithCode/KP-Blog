@@ -51,7 +51,7 @@ app.use('/graphql', graphqlHttp({
         }
 
         type RootMutation {
-            createBlogs(blogInput: BlogInput): Blog
+            createBlog(blogInput: BlogInput): Blog
             createUser(userInput:UserInput): User
         }
 
@@ -76,20 +76,35 @@ app.use('/graphql', graphqlHttp({
                     console.log(err);
                 });
         },
-        createBlogs: args => {
+        createBlog: args => {
             const blog = new Blog({
                 title: args.blogInput.title,
                 description: args.blogInput.description,
                 date: args.blogInput.date,
-                rating: new Date(args.blogInput.rating)
+                rating: new Date(args.blogInput.rating),
+                creator: '5d6975839a8b174f9d2204eb'
             });
+            let createdBlog;
             return blog
-                .save().then(result => {
-                    console.log(result);
-                    return {
-                        ...result._doc
+                .save()
+                .then(result => {
+                    createdBlog = {
+                        ...result._doc,
+                        _id: result._doc._id.toString()
                     };
-                }).catch(err => {
+                    return User.findById('5d6975839a8b174f9d2204eb');
+
+                }).then(user => {
+                    if (!user) {
+                        throw new Error('User not found');
+                    }
+                    user.createdBlogs.push(blog);
+                    return user.save();
+                })
+                .then(result => {
+                    return createdBlog;
+                })
+                .catch(err => {
                     console.log(err);
                     throw err;
                 });
