@@ -95,26 +95,33 @@ app.use('/graphql', graphqlHttp({
                 });
         },
         createUser: args => {
-            return bcrypt.hash(args.userInput.password, 12)
+            return User.findOne({
+                    email: args.userInput.email
+                })
+                .then(user => {
+                    if (user) {
+                        throw new Error('User exists Already');
+                    }
+                    return bcrypt.hash(args.userInput.password, 12);
+                })
                 .then(hashedPassword => {
                     const user = new User({
                         email: args.userInput.email,
                         password: hashedPassword
                     });
-                    return user.save()
+                    return user.save();
                 })
                 .then(result => {
                     return {
                         // Password set to null so it does not return even the hashed pass
                         ...result._doc,
-                        password:null,
+                        password: null,
                         _id: result.id
                     };
                 })
                 .catch(err => {
                     throw err;
-                })
-
+                });
         }
     },
     graphiql: true
