@@ -1,12 +1,15 @@
 const express = require('express');
 const graphqlHttp = require('express-graphql');
+const bcrypt = require('bcryptjs');
 const {
     buildSchema
 } = require('graphql');
 const mongoose = require('mongoose');
 
-const Blog = require('./models/blog');
 
+
+const Blog = require('./models/blog');
+const User = require('./models/user');
 
 const app = express();
 app.use(express.json());
@@ -64,7 +67,8 @@ app.use('/graphql', graphqlHttp({
                 .then(blogs => {
                     return blogs.map(blog => {
                         return {
-                            ...blog._doc,_id: blog.id
+                            ...blog._doc,
+                            _id: blog.id
                         };
                     });
                 })
@@ -89,6 +93,28 @@ app.use('/graphql', graphqlHttp({
                     console.log(err);
                     throw err;
                 });
+        },
+        createUser: args => {
+            return bcrypt.hash(args.userInput.password, 12)
+                .then(hashedPassword => {
+                    const user = new User({
+                        email: args.userInput.email,
+                        password: hashedPassword
+                    });
+                    return user.save()
+                })
+                .then(result => {
+                    return {
+                        // Password set to null so it does not return even the hashed pass
+                        ...result._doc,
+                        password:null,
+                        _id: result.id
+                    };
+                })
+                .catch(err => {
+                    throw err;
+                })
+
         }
     },
     graphiql: true
