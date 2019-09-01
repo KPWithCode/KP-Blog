@@ -8,7 +8,7 @@ const blogs = async blogIds => {
             _id: {
                 $in: blogIds
             }
-        })
+        });
         blogs.map(blog => {
             return {
                 ...blog._doc,
@@ -18,7 +18,6 @@ const blogs = async blogIds => {
             }
         })
         return blogs
-
     } catch (err) {
         throw err;
     }
@@ -30,7 +29,7 @@ const user = async userid => {
         return {
             ...user._doc,
             _id: user.id,
-            createdBlogs: blogs.bind(this, user._doc)
+            createdBlogs: blogs.bind(this, user._doc.createdBlogs)
         };
 
     } catch (err) {
@@ -41,7 +40,6 @@ const user = async userid => {
 module.exports = {
     blogs: async () => {
         try {
-
             const blogs = await Blog.find()
             return blogs.map(blog => {
                 return {
@@ -70,7 +68,7 @@ module.exports = {
                 ...result._doc,
                 _id: result._doc._id.toString(),
                 date: new Date(blog._doc.date).toISOString(),
-                creator: user.bind(this, result.creator)
+                creator: user.bind(this, result._doc.creator)
             };
             const creator = await User.findById('5d6b5b3b3aff0179750a5d77');
             if (!creator) {
@@ -90,7 +88,6 @@ module.exports = {
             const existingUser = await User.findOne({
                 email: args.userInput.email
             })
-
             if (existingUser) {
                 throw new Error('User exists Already');
             }
