@@ -3,6 +3,16 @@ const Blog = require('../../models/blog');
 const User = require('../../models/user');
 const Highlight = require('../../models/highlight');
 
+
+const transformBlog = blog => {
+    return {
+        ...blog._doc,
+        id: blog.id,
+        date: new Date(blog._doc.date).toISOString(),
+        creator: user.bind(this, blog.creator)
+
+    }
+}
 const blogs = async blogIds => {
     try {
         const blogs = await Blog.find({
@@ -10,15 +20,10 @@ const blogs = async blogIds => {
                 $in: blogIds
             }
         });
-        blogs.map(blog => {
-            return {
-                ...blog._doc,
-                id: blog.id,
-                date: new Date(blog._doc.date).toISOString(),
-                creator: user.bind(this, blog.creator)
-            }
+        return blogs.map(blog => {
+            return transformBlog(blog)
+            
         })
-        return blogs
     } catch (err) {
         throw err;
     }
@@ -26,11 +31,7 @@ const blogs = async blogIds => {
 const singleBlog = async blogId => {
     try {
         const blog = await Blog.findById(blogId);
-        return {
-            ...blog._doc,
-            _id: blog.id,
-            creator: user.bind(this, blog.creator)
-        }
+        return transformBlog(blog)
     } catch (err) {
         throw err;
     }
@@ -54,12 +55,7 @@ module.exports = {
         try {
             const blogs = await Blog.find()
             return blogs.map(blog => {
-                return {
-                    ...blog._doc,
-                    _id: blog.id,
-                    date: new Date(blog._doc.date).toISOString(),
-                    creator: user.bind(this, blog._doc.creator)
-                };
+                return transformBlog(blog)
             });
         } catch (err) {
             throw err;
@@ -93,12 +89,7 @@ module.exports = {
         let createdBlog;
         try {
             const result = await blog.save()
-            createdBlog = {
-                ...result._doc,
-                _id: result._doc._id.toString(),
-                date: new Date(blog._doc.date).toISOString(),
-                creator: user.bind(this, result._doc.creator)
-            };
+            createdBlog = transformBlog(result)
             const creator = await User.findById('5d6b5b3b3aff0179750a5d77');
             if (!creator) {
                 throw new Error('User not found');
@@ -159,11 +150,7 @@ module.exports = {
     cancelHighlight: async args => {
         try {
             const highlight = await Highlight.findById(args.highlightId).populate('blog')
-            const blog = {
-                ...highlight.blog._doc,
-                _id: highlight.blog.id,
-                creator: user.bind(this, highlight.blog._doc.creator)
-            }
+            const blog = transformBlog(highlight.blog)
             await Highlight.deleteOne({
                 _id: args.highlightId
             })
