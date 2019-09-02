@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const postingSchema = new Schema({
+const highlightSchema = new Schema({
     blog: {
         type: Schema.Types.ObjectId,
         ref: 'Blog'
@@ -15,4 +15,4 @@ const postingSchema = new Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Posting', postingSchema);
+module.exports = mongoose.model('Highlight', highlightSchema);

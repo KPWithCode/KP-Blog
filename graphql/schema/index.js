@@ -1,6 +1,18 @@
- const { buildSchema } = require('graphql');
+ const {
+     buildSchema
+ } = require('graphql');
 
  module.exports = buildSchema(`
+
+type Highlight {
+    _id: ID!
+    blog: Blog!
+    user: User!
+    updatedAt: String!
+    createdAt: String!
+}
+
+
  type Blog {
      _id: ID!
      title: String!
@@ -31,11 +43,14 @@
 
  type RootQuery {
      blogs: [Blog!]!
+     highlights:[Highlight!]!
  }
 
  type RootMutation {
      createBlog(blogInput: BlogInput): Blog
      createUser(userInput:UserInput): User
+     highlightBlog(blogId: ID!): Highlight!
+     cancelHighlight(highlightId: ID!): Blog!
  }
 
  schema {
