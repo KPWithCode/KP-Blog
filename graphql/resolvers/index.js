@@ -2,17 +2,28 @@ const bcrypt = require('bcryptjs');
 const Blog = require('../../models/blog');
 const User = require('../../models/user');
 const Highlight = require('../../models/highlight');
-
+const { dateToString } = require('../../helpers/date')
 
 const transformBlog = blog => {
     return {
         ...blog._doc,
         id: blog.id,
-        date: new Date(blog._doc.date).toISOString(),
+        date: dateToString(blog._doc.date),
         creator: user.bind(this, blog.creator)
 
     }
 }
+const transformHighlight = highlight => {
+    return {
+        ...highlight._doc,
+        _id: highlight.id,
+        user: user.bind(this, highlight._doc.user),
+        blog: singleBlog.bind(this, highlight._doc.blog),
+        createdAt:dateToString(highlight._doc.createdAt),
+        udpatedAt:dateToString(highlight._doc.updatedAt)
+    };
+}
+
 const blogs = async blogIds => {
     try {
         const blogs = await Blog.find({
@@ -65,14 +76,7 @@ module.exports = {
         try {
             const highlights = await Highlight.find();
             return highlights.map(highlight => {
-                return {
-                    ...highlight._doc,
-                    _id: highlight.id,
-                    user: user.bind(this, highlight._doc.user),
-                    blog: singleBlog.bind(this, highlight._doc.blog),
-                    createdAt: new Date(highlight._doc.createdAt).toISOString(),
-                    udpatedAt: new Date(highlight._doc.updatedAt).toISOString()
-                };
+              return transformHighlight(highlight)
             });
         } catch (err) {
             throw err;
@@ -138,14 +142,7 @@ module.exports = {
             blog: fetchedBlog
         });
         const result = await highlight.save();
-        return {
-            ...result._doc,
-            _id: result.id,
-            user: user.bind(this, highlight._doc.user),
-            blog: singleBlog.bind(this, highlight._doc.blog),
-            createdAt: new Date(result._doc.createdAt).toISOString(),
-            udpatedAt: new Date(result._doc.updatedAt).toISOString()
-        }
+        return transformHighlight(result)
     },
     cancelHighlight: async args => {
         try {
