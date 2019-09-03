@@ -1,0 +1,34 @@
+.main-nav {
+    display:flex;
+    justify-content: flex-start;
+    align-items:center;
+}
+.main-nav-logo {
+    font-size:1.5em;
+    
+}
+.main-nav-logo a {
+    text-decoration: none;
+    color:#000;
+}
+.main-nav-items {
+ margin-left: 1.5em;
+    
+}
+.main-nav-items ul {
+    display: flex;
+    list-style: none;
+   
+
+}
+.main-nav-items li {
+margin: 0 3em;
+
+
+}
+/* Selects Navlink */
+.main-nav-items a {
+    text-decoration: none;
+    color:#000;
+
+}
