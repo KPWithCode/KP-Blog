@@ -8,6 +8,8 @@ const Nav = props => {
 
 
     return (
+        <div>
+
         <nav className="main-nav ">
             <div className="main-nav-logo">
                 <h1><NavLink to="/">BlogEasy</NavLink></h1>
@@ -20,6 +22,8 @@ const Nav = props => {
                 </ul>
             </nav>
         </nav>
+        <hr style={{width:'90%'}}/>
+        </div>
     )
 }
 export default Nav;
