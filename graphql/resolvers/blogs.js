@@ -1,5 +1,7 @@
-
-const {transformBlog} = require('./merge');
+const {
+    transformBlog
+} = require('./merge');
+const User = require('../../models/user');
 
 
 const Blog = require('../../models/blog');
@@ -15,19 +17,22 @@ module.exports = {
             throw err;
         }
     },
-    createBlog: async args => {
+    createBlog: async (args, req) => {
+        if (req.isAuth) {
+            throw new Error('Unauthenticated')
+        }
         const blog = new Blog({
             title: args.blogInput.title,
             description: args.blogInput.description,
             date: new Date(args.blogInput.date),
             rating: args.blogInput.rating,
-            creator: '5d6b5b3b3aff0179750a5d77'
+            creator: req.userId
         });
         let createdBlog;
         try {
             const result = await blog.save()
             createdBlog = transformBlog(result)
-            const creator = await User.findById('5d6b5b3b3aff0179750a5d77');
+            const creator = await User.findById(req.userId);
             if (!creator) {
                 throw new Error('User not found');
             }

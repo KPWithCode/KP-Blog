@@ -29,6 +29,12 @@ type Highlight {
      createdBlogs:[Blog!]
  }
 
+ type AuthData {
+     userid: ID!
+     token: String!
+     tokenExpiration:Int!
+ }
+
  input BlogInput {
      title: String!
      description: String!
@@ -44,6 +50,7 @@ type Highlight {
  type RootQuery {
      blogs: [Blog!]!
      highlights:[Highlight!]!
+     login(email:String!, password:String!): AuthData!
  }
 
  type RootMutation {

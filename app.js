@@ -1,13 +1,13 @@
 const express = require('express');
 const graphqlHttp = require('express-graphql');
 const mongoose = require('mongoose');
-
+const isAuth =require('./middleware/auth')
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
 
 const app = express();
 app.use(express.json());
-
+app.use(isAuth);
 app.use('/graphql', graphqlHttp({
     // String! <- exclamation point means it will always return list of string 
     // NEVER NULL
