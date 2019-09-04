@@ -1,0 +1,31 @@
+.form {
+    width: 30em;
+    max-width: 60%;
+    margin:5em auto;
+   
+}
+.form-control {
+    margin-bottom: 1.2rem;
+}
+.form-control label {
+    margin-bottom: .5rem;
+}
+
+.form-control label,
+.form-control input {
+    width:90%;
+    display: block;
+}
+
+.form-actions button {
+    margin-right: 2rem;
+    color:#A8A8A8
+}
+
+.form-actions button:hover,
+.form-actions button:active{
+    position: relative;
+    top:-25%;
+    color:#000;
+    cursor: pointer;
+}
