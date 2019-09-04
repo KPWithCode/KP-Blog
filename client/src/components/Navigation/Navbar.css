@@ -25,11 +25,17 @@
 .main-nav-items li {
 margin: 0 3em;
 
-
 }
 /* Selects Navlink */
 .main-nav-items a {
     text-decoration: none;
-    color:#000;
+    color:#A8A8A8;
+
+}
+
+.main-nav-items a:hover {
+  position: relative;
+  top:-25%;
+  color:#000
 
 }
