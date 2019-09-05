@@ -44,11 +44,11 @@ module.exports = {
         if (!isEqual) {
             throw new Error('Password is incorrect')
         }
-       const token = jwt.sign({userId:useri.id,email:user.email}, 'somesupersecretkey',{
-           expiresIn: '1h'
-       })
-        return { userid: user.id,token:token, tokenExpiration: 1}
-         
+        const token = jwt.sign({ userId: user.id, email: user.email }, 'somesupersecretkey', {
+            expiresIn: '1h'
+        })
+        return { userId: user.id, token: token, tokenExpiration: 1 }
+
 
 
     }
