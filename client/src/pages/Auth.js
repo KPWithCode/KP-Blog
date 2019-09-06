@@ -14,10 +14,6 @@ class AuthPage extends Component {
         this.password = React.createRef();
     }
 
-    handleLogout = () => {
-        localStorage.clear();
-    }
-
     handleSwitch = () => {
         this.setState(prevState => {
             return { isLoggedIn: !prevState.isLoggedIn }
