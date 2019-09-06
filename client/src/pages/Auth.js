@@ -97,7 +97,6 @@ class AuthPage extends Component {
                     <button type="button" onClick={this.handleSwitch}>
                         Switch To {this.state.isLoggedIn ? 'Signup' : 'Login'}
                     </button>
-                    <button type="submit" onClick={this.handleLogout}>Logout</button>
                 </div>
             </form>
         )
