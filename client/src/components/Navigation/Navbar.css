@@ -27,13 +27,25 @@ margin: 0 3em;
 
 }
 /* Selects Navlink */
-.main-nav-items a {
+.main-nav-items a,
+.main-nav-items button
+{
     text-decoration: none;
     color:#A8A8A8;
 
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    background: transparent;
+
+
 }
 
-.main-nav-items a:hover {
+.main-nav-items a:hover,
+.main-nav-items a:active,
+.main-nav-items a.active,
+.main-nav-items button:hover,
+.main-nav-items button:active {
   position: relative;
   top:-25%;
   color:#000;
