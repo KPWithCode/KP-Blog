@@ -16,7 +16,12 @@ const Nav = props => (
                             <ul>
                                 {!context.token && (<li><NavLink to="/auth">Authenticate</NavLink></li>)}
                                 <li><NavLink to="/blogs">Check Out Blogs</NavLink></li>
-                                {context.token && (<React.Fragment><li><NavLink to="/highlights">Highlighted</NavLink></li> <li>Logout</li></React.Fragment>)}
+                                {context.token && (
+                                    <React.Fragment>
+                                        <li><NavLink to="/highlights">Highlighted</NavLink></li>
+                                        <li><button onClick={context.logout}>Logout</button></li>
+                                    </React.Fragment>
+                                )}
                             </ul>
                         </nav>
                     </nav>
