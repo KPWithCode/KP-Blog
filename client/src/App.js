@@ -29,12 +29,12 @@ class App extends Component {
             <Nav />
             <main>
               <Switch>
-                {!this.state.token && <Redirect from="/" to="/auth" exact />}
                 {this.state.token && <Redirect from="/" to="/blogs" exact />}
                 {this.state.token && <Redirect from="/auth" to="/blogs" exact />}
                 {!this.state.token && (<Route exact path="/auth" component={AuthPage} />)}
                 <Route exact path="/blogs" component={BlogPage} />
                 {this.state.token && (<Route exact path="/highlights" component={Highlight} />)}
+                {!this.state.token && <Redirect to="/auth" exact />}
               </Switch>
             </main>
           </AuthContext.Provider>
