@@ -25,7 +25,7 @@ module.exports = {
             title: args.blogInput.title,
             description: args.blogInput.description,
             date: new Date(args.blogInput.date),
-            rating: args.blogInput.rating,
+            rating: +args.blogInput.rating,
             creator: req.userId
         });
         let createdBlog;
