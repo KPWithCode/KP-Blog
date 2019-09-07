@@ -1,0 +1,21 @@
+.header {
+display: block;
+text-align: center;
+}
+
+
+
+.btn{
+width: 20%;
+height:15%;
+font-family:'Hepta Slab',serif;
+color: grey;
+}
+
+.btn:hover,
+.btn:active {
+color:#000;
+top:-15%;
+cursor:pointer;
+background-color: aquamarine;
+}
