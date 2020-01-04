@@ -18,3 +18,19 @@ top:-15%;
 cursor:pointer;
 background-color: aquamarine;
 }
+
+.blog-list {
+    width: 50%;
+    max-width: 90%;
+    margin: 2rem auto;
+    list-style-type: none;
+    padding: 0;
+}
+
+.blog-list-item {
+    margin: 1rem 0;
+    padding: 1rem;
+    border: 1px solid aquamarine;
+    border-radius: 25px;
+
+}
