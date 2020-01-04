@@ -1,9 +1,7 @@
 const {
-    transformBlog
+    transformBlog,
 } = require('./merge');
 const User = require('../../models/user');
-
-
 const Blog = require('../../models/blog');
 
 module.exports = {
@@ -18,8 +16,8 @@ module.exports = {
         }
     },
     createBlog: async (args, req) => {
-        if (req.isAuth) {
-            throw new Error('Unauthenticated')
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated!')
         }
         const blog = new Blog({
             title: args.blogInput.title,
@@ -42,8 +40,6 @@ module.exports = {
         } catch (err) {
             throw err;
         }
-
-
     },
 
 
