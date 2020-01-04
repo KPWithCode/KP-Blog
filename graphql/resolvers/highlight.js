@@ -2,16 +2,15 @@ const {
     transformBlog,
     transformHighlight
 } = require('./merge')
-const Highlight = require('../../models/blog');
-
-
+const Highlight = require('../../models/highlight');
+const Blog = require('../../models/blog');
 
 
 module.exports = {
 
     highlights: async (args, req) => {
-        if (req.isAuth) {
-            throw new Error('Unauthenticated')
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated!')
         }
         try {
             const highlights = await Highlight.find();
@@ -24,8 +23,8 @@ module.exports = {
     },
 
     highlightBlog: async (args, req) => {
-        if (req.isAuth) {
-            throw new Error('Unauthenticated')
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated!')
         }
         const fetchedBlog = await Blog.findOne({
             _id: args.blogId
@@ -38,8 +37,8 @@ module.exports = {
         return transformHighlight(result)
     },
     cancelHighlight: async (args, req) => {
-        if (req.isAuth) {
-            throw new Error('Unauthenticated')
+        if (!req.isAuth) {
+            throw new Error('Unauthenticated!')
         }
         try {
             const highlight = await Highlight.findById(args.highlightId).populate('blog')
