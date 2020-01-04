@@ -8,8 +8,8 @@ type Highlight {
     _id: ID!
     blog: Blog!
     user: User!
-    updatedAt: String!
     createdAt: String!
+    updatedAt: String!
 }
 
 
@@ -17,8 +17,8 @@ type Highlight {
      _id: ID!
      title: String!
      description: String!
-     date: String!
      rating: Float!
+     date: String!
      creator: User!
  }
 
@@ -38,8 +38,8 @@ type Highlight {
  input BlogInput {
      title: String!
      description: String!
-     date: String!
-     rating:Float!
+     rating: Float!
+     date:  String!
  }
 
  input UserInput {
@@ -55,7 +55,7 @@ type Highlight {
 
  type RootMutation {
      createBlog(blogInput: BlogInput): Blog
-     createUser(userInput:UserInput): User
+     createUser(userInput: UserInput): User
      highlightBlog(blogId: ID!): Highlight!
      cancelHighlight(highlightId: ID!): Blog!
  }
