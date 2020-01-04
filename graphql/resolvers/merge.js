@@ -10,7 +10,6 @@ const transformBlog = blog => {
         id: blog.id,
         date: dateToString(blog._doc.date),
         creator: user.bind(this, blog.creator)
-
     }
 }
 const transformHighlight = highlight => {
@@ -20,7 +19,7 @@ const transformHighlight = highlight => {
         user: user.bind(this, highlight._doc.user),
         blog: singleBlog.bind(this, highlight._doc.blog),
         createdAt:dateToString(highlight._doc.createdAt),
-        udpatedAt:dateToString(highlight._doc.updatedAt)
+        updatedAt:dateToString(highlight._doc.updatedAt)
     };
 }
 
@@ -64,5 +63,5 @@ const user = async userid => {
 exports.transformBlog = transformBlog;
 exports.transformHighlight = transformHighlight;
 // exports.user = user;
-// exports.blog = blog;
+// exports.blogs = blogs;
 // exports.singleBlog = singleBlog;
