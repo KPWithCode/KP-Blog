@@ -16,7 +16,7 @@ const blogSchema = new Schema({
         required: true
     },
     rating: {
-        type: Number,
+        type: Number, 
         required:true
     },
     creator: {
